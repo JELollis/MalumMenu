@@ -1,4 +1,3 @@
-using Sentry.Internal.Extensions;
 using UnityEngine;
 
 namespace MalumMenu;

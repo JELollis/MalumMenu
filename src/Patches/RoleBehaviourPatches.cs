@@ -1,9 +1,7 @@
 using HarmonyLib;
 using System.Linq;
 using System.Collections.Generic;
-using UnityEngine;
 using Sentry.Internal.Extensions;
-using AmongUs.GameOptions;
 
 namespace MalumMenu;
 
