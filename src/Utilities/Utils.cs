@@ -253,7 +253,8 @@ public static class Utils
         List<NetworkedPlayerInfo> allPlayers = GameData.Instance.AllPlayers;
         for (int i = 0; i < allPlayers.Count; i++)
         {
-            PlayerControl player = allPlayers[i].Object;
+            var nativeList = allPlayers.ToArray();
+            PlayerControl player = nativeList[i].Object;
             if (player)
             {
                 outputList.Add(player);

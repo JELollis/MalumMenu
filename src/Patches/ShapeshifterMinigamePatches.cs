@@ -21,7 +21,8 @@ public static class ShapeshifterMinigame_Begin
 
         for (int i = 0; i < list.Count; i++)
         {
-            NetworkedPlayerInfo playerData = list[i];
+            var nativeList = list.ToArray(); // NetworkedPlayerInfo[]
+            NetworkedPlayerInfo playerData = nativeList[i];
             int col = i % 3;
             int row = i / 3;
 

@@ -127,8 +127,15 @@ public static class ChatController_SendFreeChat
 
     private static string CensorUrlsAndEmails(string text)
     {
+        // Skip censoring if text contains Cyrillic characters
+        if (Regex.IsMatch(text, @"[\u0400-\u04FF]"))
+        {
+            ChatController.Logger.Debug("CensorUrlsAndEmails skipped due to Cyrillic characters", null);
+            return text;
+        }
+
         string pattern = @"(http[s]?://)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}(/[\w\-./?%&=]*)?|([a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+)";
-        Regex regex = new Regex(pattern);
+        Regex regex = new Regex(pattern, RegexOptions.IgnoreCase);
 
         return regex.Replace(text, match =>
         {

@@ -50,7 +50,9 @@ public static class FreeChatInputField_Update_LogKeypresses
         {
             char ch = Event.current.character;
             if (!char.IsControl(ch))
-                Debug.Log($"[MalumMenu Debug] Typed char: {ch} (Unicode: U+{((int)ch):X4})");
+            {
+                Debug.Log($"Keypress: {ch} (Unicode: {(int)ch:X4})");
+            }
         }
     }
 }
