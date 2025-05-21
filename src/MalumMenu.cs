@@ -15,7 +15,7 @@ namespace MalumMenu;
 public partial class MalumMenu : BasePlugin
 {
     public Harmony Harmony { get; } = new(Id);
-    public static string malumVersion = "2.5.0";
+    public static string malumVersion = "2.6.0_multilingual";
     public static List<string> supportedAU = new List<string> { "2025.3.25", "2025.3.31", "2025.4.20"};
     public static MenuUI menuUI;
     // public static ConsoleUI consoleUI;
