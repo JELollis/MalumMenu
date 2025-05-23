@@ -7,11 +7,12 @@ namespace MalumMenu
     {
         public List<GroupInfo> groups = new List<GroupInfo>();
         private bool isDragging = false;
-        private Rect windowRect = new Rect(10, 10, 300, 500);
+        private Rect windowRect = new Rect(10, 10, 300, 0);
         private bool isGUIActive = false;
         private GUIStyle submenuButtonStyle;
         private readonly string[] supportedLanguages = new[] { "en", "ko", "ru", "zh-Hans", "zh-Hant", "es", "pl", "fr" };
         private string lastLanguage;
+        private Vector2 scrollPosition = Vector2.zero;
 
         private void Start()
         {
@@ -216,7 +217,6 @@ namespace MalumMenu
                 new ToggleInfo(Localization.Translate("zh-Hant"), () => Localization.CurrentLanguage == "zh-Hant", x => { if (x) { Localization.CurrentLanguage = "zh-Hant"; MalumMenu.selectedLanguage.Value = "zh-Hant"; } }),
             }, new List<SubmenuInfo>()));
         }
-
         public void OnGUI()
         {
             if (!isGUIActive) return;
@@ -232,10 +232,8 @@ namespace MalumMenu
                 submenuButtonStyle.normal.background.Apply();
             }
 
-            if (!isDragging)
-            {
-                windowRect.height = CalculateWindowHeight();
-            }
+            // Always recalculate height
+            windowRect.height = CalculateWindowHeight();
 
             if (ColorUtility.TryParseHtmlString(MalumMenu.menuHtmlColor.Value, out Color uiColor) ||
                 ColorUtility.TryParseHtmlString("#" + MalumMenu.menuHtmlColor.Value, out uiColor))
@@ -245,14 +243,18 @@ namespace MalumMenu
 
             windowRect = GUI.Window(0, windowRect, (GUI.WindowFunction)WindowFunction, "MalumMenu v" + MalumMenu.malumVersion);
         }
-
         public void WindowFunction(int windowID)
         {
             const int groupSpacing = 50;
             const int toggleSpacing = 40;
             const int submenuSpacing = 40;
-            int currentYPosition = 20;
+            int currentYPosition = 0;
 
+            scrollPosition = GUI.BeginScrollView(
+                new Rect(0, 20, windowRect.width, windowRect.height - 20), // viewRect
+                scrollPosition,
+                new Rect(0, 0, windowRect.width - 20, CalculateWindowHeight())
+            );
 
             for (int groupId = 0; groupId < groups.Count; groupId++)
             {
@@ -302,9 +304,9 @@ namespace MalumMenu
                 }
             }
 
+            GUI.EndScrollView();
             GUI.DragWindow();
         }
-
         private int CalculateWindowHeight()
         {
             const int totalHeightBase = 70;
